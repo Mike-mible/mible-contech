@@ -1,18 +1,32 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-// Standard initialization as per guidelines
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+/**
+ * Safely access the API key.
+ */
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || '';
+  } catch {
+    return '';
+  }
+};
+
+const getAI = () => new GoogleGenAI({ apiKey: getApiKey() });
 
 /**
  * Executes a text-based prompt with the model.
- * Uses gemini-3-pro-preview for high-fidelity reasoning.
  */
 export const askAssistant = async (prompt: string, complex: boolean = true) => {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    console.warn("API Key missing. Gemini service is unavailable.");
+    return "AI features are currently unavailable. Please check configuration.";
+  }
+
   const ai = getAI();
   const config: any = {};
   
   if (complex) {
-    // Max thinking budget for gemini-3-pro-preview is 32768
     config.thinkingConfig = { thinkingBudget: 32768 };
   }
 
@@ -33,6 +47,9 @@ export const askAssistant = async (prompt: string, complex: boolean = true) => {
  * Analyzes an image with an optional text prompt.
  */
 export const analyzeImage = async (prompt: string, base64Data: string, mimeType: string) => {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error("API Key missing");
+
   const ai = getAI();
   const imagePart = {
     inlineData: {
