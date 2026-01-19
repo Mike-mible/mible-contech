@@ -1,0 +1,8 @@
+{
+  "name": "ConTech",
+  "description": "Comprehensive construction site supervision platform featuring a mobile field app for daily logs and inspections, and a web dashboard for management and reporting.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
