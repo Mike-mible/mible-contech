@@ -2,6 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+// Initialize performance monitoring as a side-effect
+injectSpeedInsights();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
