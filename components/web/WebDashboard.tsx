@@ -8,12 +8,19 @@ import DailyLogsTable from './screens/DailyLogsTable';
 import MaterialsTable from './screens/MaterialsTable';
 import InspectionsTable from './screens/InspectionsTable';
 import Administration from './screens/Administration';
+import Auth from './screens/Auth';
 import { AIChat } from '../common/AIChat';
 import { ICONS } from '../../constants';
 
 const WebDashboard: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [screen, setScreen] = useState<WebScreen>(WebScreen.OVERVIEW);
   const [showAI, setShowAI] = useState(false);
+
+  const handleAuthComplete = (role: string) => {
+    setIsAuthenticated(true);
+    setScreen(WebScreen.OVERVIEW);
+  };
 
   const renderScreen = () => {
     switch (screen) {
@@ -25,6 +32,10 @@ const WebDashboard: React.FC = () => {
       default: return <Overview />;
     }
   };
+
+  if (!isAuthenticated) {
+    return <Auth onAuthComplete={handleAuthComplete} />;
+  }
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden relative">

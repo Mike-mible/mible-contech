@@ -1,18 +1,40 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ICONS } from '../../constants';
+import { testConnection } from '../../lib/supabase';
 
 interface Props {
   activeScreenName: string;
 }
 
 const Header: React.FC<Props> = ({ activeScreenName }) => {
+  const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      const res = await testConnection();
+      setDbStatus(res.success ? 'connected' : 'error');
+    };
+    checkConnection();
+    // Re-check every 30 seconds
+    const interval = setInterval(checkConnection, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
       <div className="flex items-center gap-4">
         <h2 className="text-xl font-bold text-slate-800 capitalize">{activeScreenName.replace('_', ' ')}</h2>
         <div className="h-6 w-px bg-slate-200"></div>
-        <p className="text-slate-500 text-sm font-medium">All Projects &middot; Last updated 2 mins ago</p>
+        <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-100">
+          <div className={`w-1.5 h-1.5 rounded-full ${
+            dbStatus === 'checking' ? 'bg-slate-300 animate-pulse' : 
+            dbStatus === 'connected' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500'
+          }`}></div>
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+            DB: {dbStatus}
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-6">
@@ -33,5 +55,4 @@ const Header: React.FC<Props> = ({ activeScreenName }) => {
   );
 };
 
-// Fix: Add missing default export
 export default Header;

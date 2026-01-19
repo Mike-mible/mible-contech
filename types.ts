@@ -5,6 +5,7 @@ export enum Platform {
 }
 
 export enum MobileScreen {
+  ONBOARDING = 'ONBOARDING',
   LOGIN = 'LOGIN',
   PROJECT_SELECT = 'PROJECT_SELECT',
   DASHBOARD = 'DASHBOARD',
@@ -15,12 +16,21 @@ export enum MobileScreen {
 }
 
 export enum WebScreen {
-  LOGIN = 'LOGIN',
+  AUTH = 'AUTH',
+  ONBOARDING = 'ONBOARDING',
   OVERVIEW = 'OVERVIEW',
   DAILY_LOGS = 'DAILY_LOGS',
   MATERIALS = 'MATERIALS',
   INSPECTIONS = 'INSPECTIONS',
   ADMIN = 'ADMIN'
+}
+
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  email: string;
+  role: 'admin' | 'supervisor' | 'inspector' | 'manager';
+  avatarUrl?: string;
 }
 
 export interface Project {

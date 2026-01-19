@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { MobileScreen } from '../../types';
+import Onboarding from './screens/Onboarding';
 import Login from './screens/Login';
 import ProjectSelect from './screens/ProjectSelect';
 import Dashboard from './screens/Dashboard';
@@ -12,7 +13,7 @@ import { AIChat } from '../common/AIChat';
 import { ICONS } from '../../constants';
 
 const MobileApp: React.FC = () => {
-  const [screen, setScreen] = useState<MobileScreen>(MobileScreen.LOGIN);
+  const [screen, setScreen] = useState<MobileScreen>(MobileScreen.ONBOARDING);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [showAI, setShowAI] = useState(false);
 
@@ -23,6 +24,8 @@ const MobileApp: React.FC = () => {
 
   const renderScreen = () => {
     switch (screen) {
+      case MobileScreen.ONBOARDING:
+        return <Onboarding onComplete={() => navigate(MobileScreen.LOGIN)} />;
       case MobileScreen.LOGIN:
         return <Login onLogin={() => navigate(MobileScreen.PROJECT_SELECT)} />;
       case MobileScreen.PROJECT_SELECT:
@@ -38,7 +41,7 @@ const MobileApp: React.FC = () => {
       case MobileScreen.REPORTS:
         return <Reports onBack={() => setScreen(MobileScreen.DASHBOARD)} />;
       default:
-        return <Login onLogin={() => navigate(MobileScreen.PROJECT_SELECT)} />;
+        return <Onboarding onComplete={() => navigate(MobileScreen.LOGIN)} />;
     }
   };
 
@@ -50,7 +53,7 @@ const MobileApp: React.FC = () => {
         {renderScreen()}
       </div>
 
-      {screen !== MobileScreen.LOGIN && (
+      {![MobileScreen.LOGIN, MobileScreen.ONBOARDING].includes(screen) && (
         <button 
           onClick={() => setShowAI(true)}
           className="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full shadow-2xl flex items-center justify-center text-white z-40 animate-bounce active:scale-95"

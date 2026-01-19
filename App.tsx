@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { Platform, MobileScreen, WebScreen } from './types';
 import MobileApp from './components/mobile/MobileApp';
 import WebDashboard from './components/web/WebDashboard';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const App: React.FC = () => {
   const [platform, setPlatform] = useState<Platform>(Platform.WEB);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-100">
+      <SpeedInsights />
+      
       {/* Platform Switcher - Simulation Helper */}
       <div className="fixed top-4 right-4 z-[9999] flex bg-white p-1 rounded-full shadow-lg border border-slate-200">
         <button 
