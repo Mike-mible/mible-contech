@@ -1,7 +1,7 @@
-
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Standard initialization as per guidelines
+const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
 /**
  * Executes a text-based prompt with the model.
@@ -12,7 +12,7 @@ export const askAssistant = async (prompt: string, complex: boolean = true) => {
   const config: any = {};
   
   if (complex) {
-    // MAX Thinking Budget for gemini-3-pro-preview as per requirements
+    // Max thinking budget for gemini-3-pro-preview is 32768
     config.thinkingConfig = { thinkingBudget: 32768 };
   }
 
@@ -31,7 +31,6 @@ export const askAssistant = async (prompt: string, complex: boolean = true) => {
 
 /**
  * Analyzes an image with an optional text prompt.
- * Ideal for safety checks and document scanning.
  */
 export const analyzeImage = async (prompt: string, base64Data: string, mimeType: string) => {
   const ai = getAI();
@@ -59,7 +58,7 @@ export const analyzeImage = async (prompt: string, base64Data: string, mimeType:
 };
 
 /**
- * Creates a stateful chat session with thinking enabled by default.
+ * Creates a stateful chat session.
  */
 export const createChatSession = (systemInstruction: string) => {
   const ai = getAI();
