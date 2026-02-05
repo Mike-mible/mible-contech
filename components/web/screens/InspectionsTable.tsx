@@ -1,8 +1,14 @@
 
 import React from 'react';
 import { ICONS } from '../../../constants';
+import { UserRole } from '../../../types';
 
-const InspectionsTable: React.FC = () => {
+// Define Props interface to include role passed from WebDashboard
+interface Props {
+  role: UserRole;
+}
+
+const InspectionsTable: React.FC<Props> = ({ role }) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">

@@ -2,6 +2,7 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { ICONS } from '../../../constants';
+import { UserRole } from '../../../types';
 
 const usageData = [
   { item: 'Cement', stock: 450, used: 320, color: '#2563eb' },
@@ -10,7 +11,12 @@ const usageData = [
   { item: 'Gravel', stock: 600, used: 250, color: '#6366f1' },
 ];
 
-const MaterialsTable: React.FC = () => {
+// Define Props interface to include role passed from WebDashboard
+interface Props {
+  role: UserRole;
+}
+
+const MaterialsTable: React.FC<Props> = ({ role }) => {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-2 gap-8">

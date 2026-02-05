@@ -4,6 +4,7 @@ export enum Platform {
   WEB = 'WEB'
 }
 
+// Added missing MobileScreen enum used by mobile navigation
 export enum MobileScreen {
   ONBOARDING = 'ONBOARDING',
   LOGIN = 'LOGIN',
@@ -15,13 +16,24 @@ export enum MobileScreen {
   REPORTS = 'REPORTS'
 }
 
+export enum UserRole {
+  PROJECT_MANAGER = 'PM',
+  SITE_ENGINEER = 'SE',
+  HR_OFFICER = 'HR',
+  SAFETY_OFFICER = 'SAFETY',
+  FOREMAN = 'FOREMAN',
+  SITE_INSPECTOR = 'INSPECTOR',
+  STORE_KEEPER = 'STORE',
+  PROCUREMENT_OFFICER = 'PROCUREMENT'
+}
+
 export enum WebScreen {
-  AUTH = 'AUTH',
-  ONBOARDING = 'ONBOARDING',
   OVERVIEW = 'OVERVIEW',
   DAILY_LOGS = 'DAILY_LOGS',
   MATERIALS = 'MATERIALS',
   INSPECTIONS = 'INSPECTIONS',
+  USER_MGMT = 'USER_MGMT',
+  REPORTS = 'REPORTS',
   ADMIN = 'ADMIN'
 }
 
@@ -29,8 +41,9 @@ export interface UserProfile {
   id: string;
   fullName: string;
   email: string;
-  role: 'admin' | 'supervisor' | 'inspector' | 'manager';
+  role: UserRole;
   avatarUrl?: string;
+  projectId?: string;
 }
 
 export interface Project {
