@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { WebScreen, UserRole } from '../../types';
 import { ICONS } from '../../constants';
@@ -10,17 +11,47 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ activeScreen, onNavigate, userRole, onLogout }) => {
-  // Define visibility permissions
-  const canManageUsers = userRole === UserRole.PROJECT_MANAGER || userRole === UserRole.SITE_ENGINEER;
-  const canSeeAdmin = userRole === UserRole.PROJECT_MANAGER;
+  // Define visibility permissions per role
+  const isAdminOrPM = userRole === UserRole.ADMIN || userRole === UserRole.PROJECT_MANAGER;
+  const isSiteStaff = !isAdminOrPM && userRole !== UserRole.SITE_ENGINEER;
 
   const navItems = [
-    { id: WebScreen.OVERVIEW, label: 'Control Center', icon: ICONS.Dashboard, show: true },
-    { id: WebScreen.DAILY_LOGS, label: 'Field Logs', icon: ICONS.DailyLog, show: true },
-    { id: WebScreen.MATERIALS, label: 'Supply Chain', icon: ICONS.Materials, show: true },
-    { id: WebScreen.INSPECTIONS, label: 'QC & Safety', icon: ICONS.Inspections, show: true },
-    { id: WebScreen.USER_MGMT, label: 'Team Onboarding', icon: ICONS.Users, show: canManageUsers },
-    { id: WebScreen.ADMIN, label: 'System Admin', icon: ICONS.Admin, show: canSeeAdmin },
+    { 
+      id: WebScreen.OVERVIEW, 
+      label: 'Control Center', 
+      icon: ICONS.Dashboard, 
+      show: true 
+    },
+    { 
+      id: WebScreen.USER_MGMT, 
+      label: 'Staff Directory', 
+      icon: ICONS.Users, 
+      show: userRole === UserRole.ADMIN || userRole === UserRole.PROJECT_MANAGER 
+    },
+    { 
+      id: WebScreen.DAILY_LOGS, 
+      label: 'Field Logs', 
+      icon: ICONS.DailyLog, 
+      show: userRole !== UserRole.PROCUREMENT_OFFICER && userRole !== UserRole.STORE_KEEPER 
+    },
+    { 
+      id: WebScreen.MATERIALS, 
+      label: 'Supply Chain', 
+      icon: ICONS.Materials, 
+      show: userRole === UserRole.ADMIN || userRole === UserRole.PROJECT_MANAGER || userRole === UserRole.STORE_KEEPER || userRole === UserRole.PROCUREMENT_OFFICER 
+    },
+    { 
+      id: WebScreen.INSPECTIONS, 
+      label: 'QC & Safety', 
+      icon: ICONS.Inspections, 
+      show: userRole === UserRole.ADMIN || userRole === UserRole.SAFETY_OFFICER || userRole === UserRole.SITE_INSPECTOR || userRole === UserRole.PROJECT_MANAGER 
+    },
+    { 
+      id: WebScreen.ADMIN, 
+      label: 'System Config', 
+      icon: ICONS.Admin, 
+      show: userRole === UserRole.ADMIN 
+    },
   ];
 
   return (
@@ -35,7 +66,7 @@ const Sidebar: React.FC<Props> = ({ activeScreen, onNavigate, userRole, onLogout
         </div>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         {navItems.filter(i => i.show).map((item) => (
           <button
             key={item.id}
@@ -58,12 +89,12 @@ const Sidebar: React.FC<Props> = ({ activeScreen, onNavigate, userRole, onLogout
       <div className="p-6">
         <div className="bg-slate-800/40 rounded-3xl p-5 border border-slate-700/50 backdrop-blur-sm">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-white text-sm">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-white text-[10px] shadow-lg">
               {userRole.substring(0, 2)}
             </div>
             <div className="min-w-0">
-              <p className="text-white text-xs font-bold truncate capitalize">{userRole.replace('_', ' ')}</p>
-              <p className="text-slate-500 text-[9px] font-medium truncate tracking-wider">PROJECT ALPHA</p>
+              <p className="text-white text-[11px] font-bold truncate capitalize">{userRole.replace('_', ' ')}</p>
+              <p className="text-slate-500 text-[9px] font-medium truncate tracking-wider">SEC-A BRANCH</p>
             </div>
           </div>
           <button 

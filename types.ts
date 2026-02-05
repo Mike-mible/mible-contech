@@ -4,7 +4,6 @@ export enum Platform {
   WEB = 'WEB'
 }
 
-// Added missing MobileScreen enum used by mobile navigation
 export enum MobileScreen {
   ONBOARDING = 'ONBOARDING',
   LOGIN = 'LOGIN',
@@ -17,6 +16,7 @@ export enum MobileScreen {
 }
 
 export enum UserRole {
+  ADMIN = 'ADMIN',
   PROJECT_MANAGER = 'PM',
   SITE_ENGINEER = 'SE',
   HR_OFFICER = 'HR',
